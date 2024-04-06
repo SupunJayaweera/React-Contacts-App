@@ -29,16 +29,17 @@ const Contact = (props) => {
           className={`btn btn-sm m-1 ${
             props.contact.isFavourite ? "btn-warning" : "btn-outline-warning"
           }`}
+          onClick={() => props.favouriteClick(props.contact)}
         >
-          <i class="bi bi-star" style={{ fontSize: "1rem" }}></i>
+          <i className="bi bi-star" style={{ fontSize: "1rem" }}></i>
         </button>
       </div>
       <div className="col-2 col-md-2 pt-md-3">
         <button className="btn btn-sm m-1 btn-primary">
-          <i class="bi bi-pencil-square" style={{ fontSize: "1rem" }}></i>
+          <i className="bi bi-pencil-square" style={{ fontSize: "1rem" }}></i>
         </button>
         <button className="btn btn-sm m-1 btn-danger">
-          <i class="bi bi-trash" style={{ fontSize: "1rem" }}></i>
+          <i className="bi bi-trash" style={{ fontSize: "1rem" }}></i>
         </button>
       </div>
     </div>

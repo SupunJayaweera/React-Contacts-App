@@ -37,6 +37,47 @@ class ContactIndex extends React.Component {
     };
   }
 
+  handleAddContact = (newContact) => {
+    if (newContact.name === "") {
+      return { status: "failure", msg: "Name cannot be empty" };
+    } else if (newContact.email === "") {
+      return { status: "failure", msg: "Email cannot be empty" };
+    }
+
+    const duplicateRecord = this.state.contactList.filter((x) => {
+      if (x.name === newContact.name && x.phone === newContact.phone) {
+        return true;
+      }
+    });
+
+    if (duplicateRecord.length > 0) {
+      return { status: "failure", msg: "Duplicate Record" };
+    } else {
+      const newFinalContact = {
+        ...newContact,
+        id: this.state.contactList[this.state.contactList.length - 1].id + 1,
+        isFavourite: false,
+      };
+      this.setState((prevState) => ({
+        contactList: [...prevState.contactList, newFinalContact],
+      }));
+      return { status: "success", msg: "Contact Added Successfully" };
+    }
+  };
+
+  handletoggleFavourite = (contact) => {
+    this.setState((prevState) => {
+      return {
+        contactList: prevState.contactList.map((obj) => {
+          if (obj.id === contact.id) {
+            return { ...obj, isFavourite: !obj.isFavourite };
+          }
+          return obj;
+        }),
+      };
+    });
+  };
+
   render() {
     return (
       <div>
@@ -50,21 +91,29 @@ class ContactIndex extends React.Component {
               <RemoveAllContact />
             </div>
             <div className="row py-2">
-              <AddContact />
+              <div className="col-8 offset-2">
+                <AddContact handleAddContact={this.handleAddContact} />
+              </div>
             </div>
             <div className="row py-2">
-              <FavouriteContacts
-                contacts={this.state.contactList.filter(
-                  (u) => u.isFavourite == true
-                )}
-              />
+              <div className="col-8 offset-2">
+                <FavouriteContacts
+                  contacts={this.state.contactList.filter(
+                    (u) => u.isFavourite == true
+                  )}
+                  favouriteClick={this.handletoggleFavourite}
+                />
+              </div>
             </div>
             <div className="row py-2">
-              <GeneralContacts
-                contacts={this.state.contactList.filter(
-                  (u) => u.isFavourite == false
-                )}
-              />
+              <div className="col-8 offset-2">
+                <GeneralContacts
+                  contacts={this.state.contactList.filter(
+                    (u) => u.isFavourite == false
+                  )}
+                  favouriteClick={this.handletoggleFavourite}
+                />
+              </div>
             </div>
           </div>
         </div>
